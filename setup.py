@@ -6,5 +6,7 @@ setup(
     packages=find_packages('src', exclude=('tests', )),
     package_dir={'': 'src'},
     classifiers=['Programming Language :: Python :: 3.8'],
-    install_requires=[],
+    install_requires=[
+        'returns==0.13',
+    ],
 )
