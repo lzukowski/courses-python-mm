@@ -9,5 +9,6 @@ setup(
     install_requires=[
         'returns==0.13',
         'injector==0.18.3',
+        'factory_boy==2.12.0',
     ],
 )
