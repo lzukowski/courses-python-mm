@@ -3,7 +3,7 @@ from unittest import TestCase
 from dev_droga_courses.app import register
 from dev_droga_courses.subscription import plan
 from dev_droga_courses.subscription.plan.repository import Renewal
-from tests.utils import failed, given, raises, succeeded, then, when, expect
+from tests.utils import failed, given, succeeded, then, when, expect
 from .factories import DefineMonthlyPlanFactory
 from .in_memory import InMemoryIndividualPlanRepository
 
@@ -14,7 +14,6 @@ class DefineIndividualPlanTest(TestCase):
         register.binder.bind(plan.IndividualPlanRepository, to=self.repository)
         self.handle = register.get(plan.CommandHandlerService)
 
-    @raises(NotImplementedError)
     def test_should_not_create_a_plan_when_a_name_already_exists(self):
         with given('defined plan'):
             name = plan.cmd.PlanName("Very cool plan for 10 bucks")
@@ -26,7 +25,6 @@ class DefineIndividualPlanTest(TestCase):
         with expect('failure'):
             failed(result, plan.exce.AlreadyExists)
 
-    @raises(NotImplementedError)
     def test_should_create_a_plan_when_there_is_no_plan_with_such_a_name(self):
         with given('defined plan'):
             succeeded(self.handle(DefineMonthlyPlanFactory()))
@@ -34,7 +32,6 @@ class DefineIndividualPlanTest(TestCase):
         with then('defining yet another plan should succeed'):
             succeeded(self.handle(DefineMonthlyPlanFactory()))
 
-    @raises(NotImplementedError)
     def test_plan_is_created_with_correct_values(self):
         command = DefineMonthlyPlanFactory()
 
