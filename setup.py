@@ -10,5 +10,7 @@ setup(
         'returns==0.13',
         'injector==0.18.3',
         'factory_boy==2.12.0',
+        'SQLAlchemy==1.3.17',
+        'SQLAlchemy_utils==0.36.5',
     ],
 )

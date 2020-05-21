@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from contextlib import contextmanager
 from dataclasses import dataclass
 from enum import Enum
 from typing import NewType, Optional
@@ -33,3 +34,9 @@ class IndividualPlanRepository(ABC):
     @abstractmethod
     def save(self, dto: IndividualPlanDTO) -> None:
         raise NotImplementedError
+
+    @contextmanager
+    def __call__(self, name: PlanName) -> IndividualPlanDTO:
+        dto = self.find(name)
+        yield dto
+        self.save(dto)
