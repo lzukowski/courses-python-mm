@@ -12,5 +12,6 @@ setup(
         'factory_boy==2.12.0',
         'SQLAlchemy==1.3.17',
         'SQLAlchemy_utils==0.36.5',
+        'Babel==2.8.0',
     ],
 )

@@ -7,15 +7,14 @@ from dev_droga_courses.app import register
 from dev_droga_courses.shared.money import Currency, Money
 from dev_droga_courses.subscription.plan.db import ORMIndividualPlanRepository
 from tests.subscription.plan.factories import IndividualPlanDTOFactory
-from tests.utils import expect, given, raises, then, when
+from tests.utils import expect, given, then, when
 
 
 class ORMIndividualPlanRepositoryTest(TestCase):
     def setUp(self) -> None:
         self.session = register.get(Session)
-        self.repository = ORMIndividualPlanRepository()
+        self.repository = ORMIndividualPlanRepository(self.session)
 
-    @raises(NotImplementedError)
     def test_can_save_a_plan(self):
         with given('plan dto'):
             dto = IndividualPlanDTOFactory()
@@ -34,7 +33,6 @@ class ORMIndividualPlanRepositoryTest(TestCase):
             self.assertEqual(dto.max_no_of_pauses, entry.max_no_of_pauses)
             self.assertEqual(dto.renewal, entry.renewal)
 
-    @raises(NotImplementedError)
     def test_fee_composite_changes(self):
         with given('plan dto'):
             dto = IndividualPlanDTOFactory()

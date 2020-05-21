@@ -4,13 +4,11 @@ from dev_droga_courses.app import register
 from dev_droga_courses.subscription import plan
 from dev_droga_courses.subscription.plan.repository import Renewal
 from tests.subscription.plan.factories import DefineMonthlyPlanFactory
-from tests.subscription.plan.in_memory import InMemoryIndividualPlanRepository
 
 
 class DefineIndividualPlanTest(TestCase):
     def setUp(self) -> None:
-        self.repository = InMemoryIndividualPlanRepository()
-        register.binder.bind(plan.IndividualPlanRepository, to=self.repository)
+        self.repository = register.get(plan.IndividualPlanRepository)
         self.handle = register.get(plan.CommandHandlerService)
 
     def test_plan_is_created_with_correct_values(self):
