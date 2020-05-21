@@ -8,5 +8,6 @@ setup(
     classifiers=['Programming Language :: Python :: 3.8'],
     install_requires=[
         'returns==0.13',
+        'injector==0.18.3',
     ],
 )
