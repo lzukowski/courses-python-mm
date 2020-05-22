@@ -31,8 +31,8 @@ class CommandHandlerService(CommandHandler):
         if self._repository.find(command.name):
             raise AlreadyExists(command.name)
 
-        dto = IndividualPlan.createMonthly(
+        plan = IndividualPlan.createMonthly(
             command.name, command.monthlyFee, command.pauses,
         )
-        self._repository.save(dto)
+        self._repository.save(plan)
         return []
