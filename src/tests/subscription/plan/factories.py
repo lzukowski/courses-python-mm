@@ -5,8 +5,9 @@ from factory.faker import Faker
 from factory.fuzzy import FuzzyChoice
 
 from dev_droga_courses.subscription import plan
-from dev_droga_courses.subscription.plan.repository import (
-    IndividualPlanDTO, Renewal,
+from dev_droga_courses.subscription.plan.individual import (
+    IndividualPlanDTO,
+    Renewal,
 )
 from tests.shared.factories import MoneyFactory
 

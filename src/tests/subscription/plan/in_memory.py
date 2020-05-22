@@ -1,7 +1,7 @@
 from typing import Dict, Optional
 
 from dev_droga_courses.subscription import plan
-from dev_droga_courses.subscription.plan.repository import IndividualPlanDTO
+from dev_droga_courses.subscription.plan.individual import IndividualPlanDTO
 
 
 class InMemoryIndividualPlanRepository(plan.IndividualPlanRepository):

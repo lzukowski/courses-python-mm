@@ -1,29 +1,9 @@
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
-from dataclasses import dataclass
-from enum import Enum
-from typing import NewType, Optional
-from uuid import UUID
+from typing import Optional
 
-from dev_droga_courses.shared.money import Money
 from .cmd import PlanName
-
-
-class Renewal(Enum):
-    Month = 'MONTH'
-    Annual = 'ANNUAL'
-
-
-IndividualPlanID = NewType('IndividualPlanID', UUID)
-
-
-@dataclass
-class IndividualPlanDTO:
-    id: IndividualPlanID
-    name: PlanName
-    fee: Money
-    max_no_of_pauses: int
-    renewal: Renewal
+from .individual import IndividualPlanDTO
 
 
 class IndividualPlanRepository(ABC):

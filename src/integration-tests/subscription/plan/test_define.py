@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from dev_droga_courses.app import register
 from dev_droga_courses.subscription import plan
-from dev_droga_courses.subscription.plan.repository import Renewal
+from dev_droga_courses.subscription.plan.individual import Renewal
 from tests.subscription.plan.factories import DefineMonthlyPlanFactory
 
 
