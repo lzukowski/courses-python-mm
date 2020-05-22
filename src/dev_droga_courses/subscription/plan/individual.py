@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import NewType
-from uuid import UUID, uuid1
+from uuid import uuid1
 
 from sqlalchemy import Column, DateTime, Enum as SQLEnum, Float, Integer, String
 from sqlalchemy.ext.mutable import MutableComposite
@@ -17,18 +15,6 @@ from .cmd import PlanName
 class Renewal(Enum):
     Month = 'MONTH'
     Annual = 'ANNUAL'
-
-
-IndividualPlanID = NewType('IndividualPlanID', UUID)
-
-
-@dataclass
-class IndividualPlanDTO:
-    id: IndividualPlanID
-    name: PlanName
-    fee: Money
-    max_no_of_pauses: int
-    renewal: Renewal
 
 
 class MoneyComposite(Money, MutableComposite):
@@ -67,18 +53,10 @@ class IndividualPlan(Base):
             renewal=Renewal.Month,
         )
 
-    @classmethod
-    def from_dto(cls, dto: IndividualPlanDTO) -> 'IndividualPlan':
-        return IndividualPlan(
-            id=dto.id,
-            name=dto.name,
-            fee=MoneyComposite(dto.fee.amount, dto.fee.currency),
-            max_no_of_pauses=dto.max_no_of_pauses,
-            renewal=dto.renewal,
-        )
-
     id = Column(UUIDType(binary=True), primary_key=True, default=uuid1)
-    name = Column(String(100), nullable=False, index=True, unique=True)
+    name: PlanName = Column(
+        String(100), nullable=False, index=True, unique=True,
+    )
     max_no_of_pauses = Column(Integer, nullable=False)
     renewal = Column(
         SQLEnum(Renewal, create_constraint=False, native_enum=False),

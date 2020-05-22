@@ -6,8 +6,7 @@ from factory.fuzzy import FuzzyChoice
 
 from dev_droga_courses.subscription import plan
 from dev_droga_courses.subscription.plan.individual import (
-    IndividualPlanDTO,
-    Renewal,
+    IndividualPlan, Renewal,
 )
 from tests.shared.factories import MoneyFactory
 
@@ -21,9 +20,9 @@ class DefineMonthlyPlanFactory(Factory):
     pauses = plan.cmd.MAX_NUMBER_OF_PAUSES
 
 
-class IndividualPlanDTOFactory(Factory):
+class IndividualPlanFactory(Factory):
     class Meta:
-        model = IndividualPlanDTO
+        model = IndividualPlan
 
     id = LazyAttribute(lambda _: uuid1())
     name = Faker('name', locale='pl_PL')

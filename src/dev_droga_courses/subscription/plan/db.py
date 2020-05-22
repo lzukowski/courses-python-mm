@@ -18,11 +18,6 @@ class ORMIndividualPlanRepository(IndividualPlanRepository):
         return self.query.with_for_update().filter_by(name=name).one_or_none()
 
     def save(self, model: IndividualPlan) -> None:
-        model = (
-            model
-            if isinstance(model, IndividualPlan)
-            else IndividualPlan.from_dto(model)
-        )
         self._session.merge(model)
         try:
             self._session.commit()
