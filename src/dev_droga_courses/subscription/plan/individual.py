@@ -1,42 +1,19 @@
 from datetime import datetime
+from decimal import Decimal
 from enum import Enum
 from uuid import uuid1
 
 from sqlalchemy import Column, DateTime, Enum as SQLEnum, Float, Integer, String
-from sqlalchemy.ext.mutable import MutableComposite
-from sqlalchemy.orm import composite
 from sqlalchemy_utils import CurrencyType, UUIDType
 
 from dev_droga_courses.db import Base
-from dev_droga_courses.shared.money import Money
+from dev_droga_courses.shared.money import Currency, Money
 from .cmd import PlanName
 
 
 class Renewal(Enum):
     Month = 'MONTH'
     Annual = 'ANNUAL'
-
-
-class MoneyComposite(Money, MutableComposite):
-    def __composite_values__(self):
-        return self.amount, self.currency
-
-    def __setattr__(self, key, value):
-        super().__setattr__(key, value)
-        self.changed()
-
-    @classmethod
-    def coerce(cls, key, value):
-        return (
-            value if isinstance(value, MoneyComposite)
-            else MoneyComposite(value.amount, value.currency)
-        )
-
-    def __eq__(self, other):
-        return (
-            self.amount == other.amount and
-            self.currency == other.currency
-        )
 
 
 class IndividualPlan(Base):
@@ -48,7 +25,8 @@ class IndividualPlan(Base):
     ) -> 'IndividualPlan':
         return IndividualPlan(
             name=name,
-            fee=fee,
+            fee_amount=fee.amount,
+            fee_currency=fee.currency,
             max_no_of_pauses=max_no_of_pauses,
             renewal=Renewal.Month,
         )
@@ -58,18 +36,14 @@ class IndividualPlan(Base):
         String(100), nullable=False, index=True, unique=True,
     )
     max_no_of_pauses = Column(Integer, nullable=False)
-    renewal = Column(
+    fee_amount: Decimal = Column(Float(asdecimal=True), nullable=False)
+    fee_currency: Currency = Column(CurrencyType, nullable=False)
+    renewal: Renewal = Column(
         SQLEnum(Renewal, create_constraint=False, native_enum=False),
         nullable=False,
     )
     when_created = Column(DateTime, nullable=False, default=datetime.utcnow)
     when_updated = Column(DateTime, nullable=True, onupdate=datetime.utcnow)
-
-    fee = composite(
-        MoneyComposite,
-        Column('fee_amount', Float(asdecimal=True), nullable=False),
-        Column('fee_currency', CurrencyType, nullable=False),
-    )
 
     def __hash__(self):
         return hash(self.id)
