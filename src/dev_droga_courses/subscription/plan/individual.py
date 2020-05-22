@@ -31,20 +31,6 @@ class IndividualPlanDTO:
     renewal: Renewal
 
 
-class IndividualPlan:
-    def __init__(self, dto: IndividualPlanDTO) -> None:
-        self._dto = dto
-
-    @classmethod
-    def createMonthly(
-            cls, name: PlanName, fee: Money, max_no_of_pauses: int,
-    ) -> IndividualPlanDTO:
-        plan_id = IndividualPlanID(uuid1())
-        return IndividualPlanDTO(
-            plan_id, name, fee, max_no_of_pauses, Renewal.Month,
-        )
-
-
 class MoneyComposite(Money, MutableComposite):
     def __composite_values__(self):
         return self.amount, self.currency
@@ -67,12 +53,23 @@ class MoneyComposite(Money, MutableComposite):
         )
 
 
-class IndividualPlanModel(IndividualPlanDTO, Base):
+class IndividualPlan(Base):
     __tablename__ = 'individual_plans'
 
     @classmethod
-    def from_dto(cls, dto: IndividualPlanDTO) -> 'IndividualPlanModel':
-        return IndividualPlanModel(
+    def createMonthly(
+            cls, name: PlanName, fee: Money, max_no_of_pauses: int,
+    ) -> 'IndividualPlan':
+        return IndividualPlan(
+            name=name,
+            fee=fee,
+            max_no_of_pauses=max_no_of_pauses,
+            renewal=Renewal.Month,
+        )
+
+    @classmethod
+    def from_dto(cls, dto: IndividualPlanDTO) -> 'IndividualPlan':
+        return IndividualPlan(
             id=dto.id,
             name=dto.name,
             fee=MoneyComposite(dto.fee.amount, dto.fee.currency),
@@ -80,7 +77,7 @@ class IndividualPlanModel(IndividualPlanDTO, Base):
             renewal=dto.renewal,
         )
 
-    id = Column(UUIDType(binary=True), primary_key=True)
+    id = Column(UUIDType(binary=True), primary_key=True, default=uuid1)
     name = Column(String(100), nullable=False, index=True, unique=True)
     max_no_of_pauses = Column(Integer, nullable=False)
     renewal = Column(

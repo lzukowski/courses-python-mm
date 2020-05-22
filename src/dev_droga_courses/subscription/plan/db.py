@@ -5,23 +5,23 @@ from sqlalchemy.orm import Session
 
 from .cmd import PlanName
 from .repository import IndividualPlanRepository
-from .individual import IndividualPlanDTO, IndividualPlanModel
+from .individual import IndividualPlan
 
 
 class ORMIndividualPlanRepository(IndividualPlanRepository):
     @inject
     def __init__(self, session: Session) -> None:
         self._session = session
-        self.query = session.query(IndividualPlanModel)
+        self.query = session.query(IndividualPlan)
 
-    def find(self, name: PlanName) -> Optional[IndividualPlanDTO]:
+    def find(self, name: PlanName) -> Optional[IndividualPlan]:
         return self.query.with_for_update().filter_by(name=name).one_or_none()
 
-    def save(self, dto: IndividualPlanDTO) -> None:
+    def save(self, model: IndividualPlan) -> None:
         model = (
-            dto
-            if isinstance(dto, IndividualPlanModel)
-            else IndividualPlanModel.from_dto(dto)
+            model
+            if isinstance(model, IndividualPlan)
+            else IndividualPlan.from_dto(model)
         )
         self._session.merge(model)
         try:

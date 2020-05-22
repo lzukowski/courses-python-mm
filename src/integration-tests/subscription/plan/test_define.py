@@ -4,6 +4,7 @@ from dev_droga_courses.app import register
 from dev_droga_courses.subscription import plan
 from dev_droga_courses.subscription.plan.individual import Renewal
 from tests.subscription.plan.factories import DefineMonthlyPlanFactory
+from tests.utils import succeeded
 
 
 class DefineIndividualPlanTest(TestCase):
@@ -13,7 +14,7 @@ class DefineIndividualPlanTest(TestCase):
 
     def test_plan_is_created_with_correct_values(self):
         command = DefineMonthlyPlanFactory()
-        self.handle(command)
+        succeeded(self.handle(command))
 
         entry = self.repository.find(command.name)
 
