@@ -14,7 +14,6 @@ class DeactivateIndividualPlanTest(TestCase):
     def setUp(self) -> None:
         self.handle = register.get(plan.CommandHandlerService)
 
-    @raises(NotImplementedError)
     def test_can_deactivate_an_existing_plan(self):
         with given('activate monthly plan'):
             define = DefineMonthlyPlanFactory()
