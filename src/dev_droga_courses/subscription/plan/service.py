@@ -7,16 +7,22 @@ from returns.result import safe
 from dev_droga_courses.shared.service import (
     Command, CommandHandler, Event, Result,
 )
-from .cmd import DefineMonthlyPlan
-from .exce import AlreadyExists
+from .cmd import Activate, DefineMonthlyPlan
+from .exce import AlreadyExists, DoesNotExists, MaxActivePlansReached
 from .individual import IndividualPlan
 from .repository import IndividualPlanRepository
+from .settings import MaxActivePlans
 
 
 class CommandHandlerService(CommandHandler):
     @inject
-    def __init__(self, repository: IndividualPlanRepository) -> None:
+    def __init__(
+            self,
+            repository: IndividualPlanRepository,
+            max_active: MaxActivePlans,
+    ) -> None:
         self._repository = repository
+        self._max_active = max_active
 
     @safe
     def __call__(self, command: Command) -> Result:
@@ -36,3 +42,18 @@ class CommandHandlerService(CommandHandler):
         )
         self._repository.save(plan)
         return []
+
+    @_handle.register(Activate)
+    def _activate_plan(self, command: Activate) -> List[Event]:
+        if self._max_active_reached():
+            raise MaxActivePlansReached()
+
+        with self._repository(command.name) as plan:
+            if not plan:
+                raise DoesNotExists(command.name)
+            plan.activate()
+        return []
+
+    def _max_active_reached(self) -> bool:
+        active = self._repository.active_plans_count()
+        return self._max_active <= active

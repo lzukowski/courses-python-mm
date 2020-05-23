@@ -24,3 +24,6 @@ class ORMIndividualPlanRepository(IndividualPlanRepository):
         except:
             self._session.rollback()
             raise
+
+    def active_plans_count(self) -> int:
+        raise NotImplementedError
