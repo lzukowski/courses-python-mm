@@ -1,17 +1,15 @@
 from unittest import TestCase
 
-from dev_droga_courses.app import register
 from dev_droga_courses.shared.service import Result
 from dev_droga_courses.subscription import plan
-from tests.utils import expect, failed, given, raises, succeeded, then, when
+from tests.utils import expect, failed, given, succeeded, then, when
+from . import register
 from .factories import ActivateFactory, DefineMonthlyPlanFactory
-from .in_memory import InMemoryIndividualPlanRepository
 
 
 class ActivateIndividualPlanTest(TestCase):
     def setUp(self) -> None:
-        self.repository = InMemoryIndividualPlanRepository()
-        register.binder.bind(plan.IndividualPlanRepository, to=self.repository)
+        self.repository = register.get(plan.IndividualPlanRepository)
         self.handle = register.get(plan.CommandHandlerService)
 
     def test_cannot_activate_not_existing_plan(self):

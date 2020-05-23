@@ -25,7 +25,7 @@ class IndividualPlan(Base):
     __tablename__ = 'individual_plans'
 
     @classmethod
-    def createMonthly(
+    def create_monthly(
             cls, name: PlanName, fee: Money, max_no_of_pauses: int,
     ) -> 'IndividualPlan':
         return IndividualPlan(
@@ -60,6 +60,9 @@ class IndividualPlan(Base):
 
     def activate(self) -> None:
         self.status = Status.Activated
+
+    def deactivate(self) -> None:
+        self.status = Status.Deactivated
 
     def is_active(self) -> bool:
         return self.status == Status.Activated
