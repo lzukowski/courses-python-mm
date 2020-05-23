@@ -27,6 +27,13 @@ class ActivateFactory(Factory):
     name = Faker('name', locale='pl_PL')
 
 
+class DeactivateFactory(Factory):
+    class Meta:
+        model = plan.cmd.Deactivate
+
+    name = Faker('name', locale='pl_PL')
+
+
 class IndividualPlanFactory(Factory):
     class Meta:
         model = IndividualPlan

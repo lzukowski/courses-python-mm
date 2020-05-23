@@ -15,3 +15,7 @@ class DefineMonthlyPlan(Command):
 
 class Activate(Command):
     name: PlanName
+
+
+class Deactivate(Command):
+    name: PlanName
