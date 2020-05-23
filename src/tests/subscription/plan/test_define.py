@@ -47,5 +47,6 @@ class DefineIndividualPlanTest(TestCase):
         with expect('correct values'):
             self.assertEqual(entry.name, command.name)
             self.assertEqual(entry.max_no_of_pauses, command.pauses)
-            self.assertEqual(entry.fee, command.monthlyFee)
+            self.assertEqual(entry.fee_amount, command.monthlyFee.amount)
+            self.assertEqual(entry.fee_currency, command.monthlyFee.currency)
             self.assertEqual(entry.renewal, Renewal.Month)
