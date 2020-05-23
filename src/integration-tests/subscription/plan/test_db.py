@@ -14,7 +14,7 @@ class ORMIndividualPlanRepositoryTest(TestCase):
         self.repository = ORMIndividualPlanRepository(self.session)
 
     def test_can_save_a_plan(self):
-        with given('plan plan'):
+        with given('plan'):
             plan = IndividualPlanFactory()
 
         with when('saves in repository'):
@@ -27,6 +27,7 @@ class ORMIndividualPlanRepositoryTest(TestCase):
 
         with expect('same values in entry'):
             self.assertEqual(plan.name, entry.name)
+            self.assertEqual(plan.status, entry.status)
             self.assertEqual(plan.fee_amount, entry.fee_amount)
             self.assertEqual(plan.fee_currency, entry.fee_currency)
             self.assertEqual(plan.max_no_of_pauses, entry.max_no_of_pauses)
