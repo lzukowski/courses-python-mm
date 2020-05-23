@@ -4,10 +4,8 @@ from typing import cast, List
 from injector import inject
 from returns.result import safe
 
-from dev_droga_courses.shared.service import (
-    Command, CommandHandler, Event, Result,
-)
-from .cmd import Activate, DefineMonthlyPlan, Deactivate
+from dev_droga_courses.shared.service import CommandHandler, Event, Result
+from .cmd import Activate, DefineMonthlyPlan, Deactivate, PlanCommand
 from .exce import AlreadyExists, DoesNotExists, MaxActivePlansReached
 from .individual import IndividualPlan
 from .repository import IndividualPlanRepository
@@ -25,11 +23,11 @@ class CommandHandlerService(CommandHandler):
         self._max_active = max_active
 
     @safe
-    def __call__(self, command: Command) -> Result:
+    def __call__(self, command: PlanCommand) -> Result:
         return cast(Result, self._handle(command))
 
     @singledispatchmethod
-    def _handle(self, command: Command) -> List[Event]:
+    def _handle(self, command: PlanCommand) -> List[Event]:
         raise NotImplementedError
 
     @_handle.register(DefineMonthlyPlan)
