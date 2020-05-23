@@ -15,6 +15,10 @@ class IndividualPlanRepository(ABC):
     def save(self, plan: IndividualPlan) -> None:
         raise NotImplementedError
 
+    @abstractmethod
+    def active_plans_count(self) -> int:
+        raise NotImplementedError
+
     @contextmanager
     def __call__(self, name: PlanName) -> IndividualPlan:
         plan = self.find(name)

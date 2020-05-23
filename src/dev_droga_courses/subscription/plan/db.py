@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from .cmd import PlanName
 from .repository import IndividualPlanRepository
-from .individual import IndividualPlan
+from .individual import IndividualPlan, Status
 
 
 class ORMIndividualPlanRepository(IndividualPlanRepository):
@@ -24,3 +24,6 @@ class ORMIndividualPlanRepository(IndividualPlanRepository):
         except:
             self._session.rollback()
             raise
+
+    def active_plans_count(self) -> int:
+        return self.query.filter_by(status=Status.Activated).count()

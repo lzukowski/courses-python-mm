@@ -14,6 +14,9 @@ class InMemoryIndividualPlanRepository(plan.IndividualPlanRepository):
     def save(self, plan_: IndividualPlan) -> None:
         self._plans[plan_.name] = plan_
 
+    def active_plans_count(self) -> int:
+        return sum(p.is_active() for p in self._plans.values())
+
     def __repr__(self):
         return (
             f'<InMemory[{id(self)}] '

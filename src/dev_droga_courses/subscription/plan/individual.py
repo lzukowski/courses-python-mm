@@ -16,6 +16,11 @@ class Renewal(Enum):
     Annual = 'ANNUAL'
 
 
+class Status(Enum):
+    Activated = 'ACTIVATED'
+    Deactivated = 'DEACTIVATED'
+
+
 class IndividualPlan(Base):
     __tablename__ = 'individual_plans'
 
@@ -25,6 +30,7 @@ class IndividualPlan(Base):
     ) -> 'IndividualPlan':
         return IndividualPlan(
             name=name,
+            status=Status.Deactivated,
             fee_amount=fee.amount,
             fee_currency=fee.currency,
             max_no_of_pauses=max_no_of_pauses,
@@ -34,6 +40,10 @@ class IndividualPlan(Base):
     id = Column(UUIDType(binary=True), primary_key=True, default=uuid1)
     name: PlanName = Column(
         String(100), nullable=False, index=True, unique=True,
+    )
+    status: Status = Column(
+        SQLEnum(Status, create_constraint=False, native_enum=False),
+        nullable=False,
     )
     max_no_of_pauses = Column(Integer, nullable=False)
     fee_amount: Decimal = Column(Float(asdecimal=True), nullable=False)
@@ -47,3 +57,9 @@ class IndividualPlan(Base):
 
     def __hash__(self):
         return hash(self.id)
+
+    def activate(self) -> None:
+        self.status = Status.Activated
+
+    def is_active(self) -> bool:
+        return self.status == Status.Activated
