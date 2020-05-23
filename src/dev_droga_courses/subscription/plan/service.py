@@ -7,7 +7,7 @@ from returns.result import safe
 from dev_droga_courses.shared.service import (
     Command, CommandHandler, Event, Result,
 )
-from .cmd import Activate, DefineMonthlyPlan
+from .cmd import Activate, DefineMonthlyPlan, Deactivate
 from .exce import AlreadyExists, DoesNotExists, MaxActivePlansReached
 from .individual import IndividualPlan
 from .repository import IndividualPlanRepository
@@ -52,6 +52,14 @@ class CommandHandlerService(CommandHandler):
             if not plan:
                 raise DoesNotExists(command.name)
             plan.activate()
+        return []
+
+    @_handle.register(Deactivate)
+    def _deactivate_plan(self, command: Deactivate) -> List[Event]:
+        with self._repository(command.name) as plan:
+            if not plan:
+                raise DoesNotExists(command.name)
+            plan.deactivate()
         return []
 
     def _max_active_reached(self) -> bool:

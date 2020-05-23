@@ -61,5 +61,8 @@ class IndividualPlan(Base):
     def activate(self) -> None:
         self.status = Status.Activated
 
+    def deactivate(self) -> None:
+        raise NotImplementedError
+
     def is_active(self) -> bool:
         return self.status == Status.Activated

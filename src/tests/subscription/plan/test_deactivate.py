@@ -26,7 +26,6 @@ class DeactivateIndividualPlanTest(TestCase):
         with then('plan can be deactivated'):
             succeeded(self.handle(DeactivateFactory(name=name)))
 
-    @raises(NotImplementedError)
     def test_cannot_deactivate_a_plan_which_does_not_exist(self):
         failed(
             self.handle(DeactivateFactory(name='Not existing plan')),
