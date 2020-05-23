@@ -59,7 +59,7 @@ class IndividualPlan(Base):
         return hash(self.id)
 
     def activate(self) -> None:
-        raise NotImplementedError
+        self.status = Status.Activated
 
     def is_active(self) -> bool:
-        raise NotImplementedError
+        return self.status == Status.Activated

@@ -14,7 +14,6 @@ class ActivateIndividualPlanTest(TestCase):
         register.binder.bind(plan.IndividualPlanRepository, to=self.repository)
         self.handle = register.get(plan.CommandHandlerService)
 
-    @raises(NotImplementedError)
     def test_cannot_activate_not_existing_plan(self):
         with when('Activating not existing plan'):
             command = plan.cmd.Activate(name='Not Existing Plan')
@@ -23,7 +22,6 @@ class ActivateIndividualPlanTest(TestCase):
         with expect('failure'):
             failed(result, plan.exce.DoesNotExists)
 
-    @raises(NotImplementedError)
     def test_cannot_activate_plan_when_max_number_of_plans_activated(self):
         with given('max number of active plans'):
             for _ in range(register.get(plan.settings.MaxActivePlans)):
@@ -35,7 +33,6 @@ class ActivateIndividualPlanTest(TestCase):
         with expect('failure'):
             failed(result, plan.exce.MaxActivePlansReached)
 
-    @raises(NotImplementedError)
     def test_can_activate_a_plan(self):
         with given('defined not active plan'):
             command = DefineMonthlyPlanFactory()

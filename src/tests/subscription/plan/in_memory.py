@@ -15,7 +15,7 @@ class InMemoryIndividualPlanRepository(plan.IndividualPlanRepository):
         self._plans[plan_.name] = plan_
 
     def active_plans_count(self) -> int:
-        raise NotImplementedError
+        return sum(p.is_active() for p in self._plans.values())
 
     def __repr__(self):
         return (
