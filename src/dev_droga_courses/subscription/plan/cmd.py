@@ -11,3 +11,7 @@ class DefineMonthlyPlan(Command):
     name: PlanName
     monthlyFee: Money
     pauses: int = MAX_NUMBER_OF_PAUSES
+
+
+class Activate(Command):
+    name: PlanName

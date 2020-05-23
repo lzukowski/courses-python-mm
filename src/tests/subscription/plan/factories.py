@@ -20,6 +20,13 @@ class DefineMonthlyPlanFactory(Factory):
     pauses = plan.cmd.MAX_NUMBER_OF_PAUSES
 
 
+class ActivateFactory(Factory):
+    class Meta:
+        model = plan.cmd.Activate
+
+    name = Faker('name', locale='pl_PL')
+
+
 class IndividualPlanFactory(Factory):
     class Meta:
         model = IndividualPlan
