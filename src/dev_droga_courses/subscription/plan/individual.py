@@ -25,7 +25,7 @@ class IndividualPlan(Base):
     __tablename__ = 'individual_plans'
 
     @classmethod
-    def createMonthly(
+    def create_monthly(
             cls, name: PlanName, fee: Money, max_no_of_pauses: int,
     ) -> 'IndividualPlan':
         return IndividualPlan(
