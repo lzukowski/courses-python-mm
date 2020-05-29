@@ -55,9 +55,6 @@ class IndividualPlan(Base):
     when_created = Column(DateTime, nullable=False, default=datetime.utcnow)
     when_updated = Column(DateTime, nullable=True, onupdate=datetime.utcnow)
 
-    def __hash__(self):
-        return hash(self.id)
-
     def activate(self) -> None:
         self.status = Status.Activated
 

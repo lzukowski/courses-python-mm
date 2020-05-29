@@ -1,0 +1,38 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install coverage==5.1
+          pip install pycodestyle==2.6.0
+          pip install flake8==3.8.2 pyflakes==2.2.0
+          pip install pylint==2.5.2
+      - name: Code Style
+        run: |
+          pycodestyle src/dev_droga_courses
+          pycodestyle src --ignore=wrong-import-order
+          flake8 src
+          pylint src/dev_droga_courses --rcfile=./.pylintrc
+          pylint src --rcfile=./.pylintrc -d wrong-import-order
+      - name: Test
+        run: |
+          coverage erase
+          coverage run --source=src/dev_droga_courses setup.py test
+          coverage report -m

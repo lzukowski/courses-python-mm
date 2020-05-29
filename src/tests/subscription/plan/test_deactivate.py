@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from dev_droga_courses.subscription import plan
-from tests.utils import given, succeeded, then, raises, failed
+from tests.utils import given, succeeded, then, failed
 from . import register
 from .factories import (
     DefineMonthlyPlanFactory,
