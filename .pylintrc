@@ -1,5 +1,5 @@
 [pylint]
-disable=missing-docstring,too-few-public-methods,invalid-name,unsubscriptable-object,no-member
+disable=missing-docstring,too-few-public-methods,invalid-name,unsubscriptable-object,no-member,no-self-use,import-error
 ignore-docstrings = yes
 max-line-length=80
 expected-line-ending-format=LF

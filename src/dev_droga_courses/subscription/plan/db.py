@@ -17,11 +17,11 @@ class ORMIndividualPlanRepository(IndividualPlanRepository):
     def find(self, name: PlanName) -> Optional[IndividualPlan]:
         return self.query.with_for_update().filter_by(name=name).one_or_none()
 
-    def save(self, model: IndividualPlan) -> None:
-        self._session.merge(model)
+    def save(self, plan: IndividualPlan) -> None:
+        self._session.merge(plan)
         try:
             self._session.commit()
-        except:
+        except:  # noqa
             self._session.rollback()
             raise
 
